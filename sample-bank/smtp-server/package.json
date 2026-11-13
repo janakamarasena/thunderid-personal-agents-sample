@@ -1,0 +1,27 @@
+{
+  "name": "smtp-server",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Sample in-memory SMTP server with a web inbox for the Sample Bank sample.",
+  "scripts": {
+    "prestart": "vite build",
+    "start": "node src/index.js",
+    "dev": "concurrently \"node --watch src/index.js\" \"vite build --watch\"",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "concurrently": "^10.0.5",
+    "dotenv": "^16.5.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.0.4",
+    "vite": "npm:rolldown-vite@^7.1.14"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  }
+}

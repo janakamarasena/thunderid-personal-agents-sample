@@ -1,0 +1,12 @@
+{
+  "name": "personal-agent-sample",
+  "private": true,
+  "type": "module",
+  "description": "Sample Bank: a ThunderID personal agent demo",
+  "scripts": {
+    "start": "node start.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

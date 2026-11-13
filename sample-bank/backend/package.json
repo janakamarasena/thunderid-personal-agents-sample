@@ -1,0 +1,12 @@
+{
+  "name": "bank-backend",
+  "private": true,
+  "type": "module",
+  "description": "Sample bank API that accepts ThunderID access tokens",
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

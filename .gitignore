@@ -1,0 +1,14 @@
+# Secrets and local state: never commit these.
+.env
+thunderid/
+logs/
+
+# The Sample Bank's runtime data and the agent toolkit's keys and token, if it is run from the repository.
+sample-bank/backend/data/
+sample-bank/backend/agent/.keys/
+sample-bank/backend/agent/.state/
+
+node_modules/
+dist/
+.DS_Store
+.claude/

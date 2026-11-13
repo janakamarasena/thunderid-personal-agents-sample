@@ -1,0 +1,247 @@
+openapi: 3.0.3
+info:
+  title: Sample Bank SMTP Server API
+  description: >-
+    HTTP API for the Sample Bank sample in-memory SMTP server. Exposes the
+    captured mail inbox (list, read, mark read/unread, delete) received by
+    the local SMTP listener.
+  version: 0.1.0
+  license:
+    name: Apache-2.0
+
+servers:
+  - url: http://127.0.0.1:8788
+    description: Local default (HTTP_HOST/HTTP_PORT env vars)
+
+tags:
+  - name: health
+    description: Service health
+  - name: messages
+    description: Captured email messages
+
+paths:
+  /health:
+    get:
+      tags: [health]
+      summary: Health check
+      operationId: getHealth
+      responses:
+        "200":
+          description: Server is up
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                required: [status]
+
+  /api/messages:
+    get:
+      tags: [messages]
+      summary: List messages
+      description: Returns message summaries (no body content) and the unread count.
+      operationId: listMessages
+      responses:
+        "200":
+          description: List of messages
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  unread:
+                    type: integer
+                    example: 3
+                  messages:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/MessageSummary"
+                required: [unread, messages]
+    delete:
+      tags: [messages]
+      summary: Clear all messages
+      operationId: clearMessages
+      responses:
+        "200":
+          description: All messages deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cleared:
+                    type: integer
+                    description: Number of messages that were deleted
+                    example: 12
+                required: [cleared]
+
+  /api/messages/{id}:
+    parameters:
+      - $ref: "#/components/parameters/MessageId"
+    get:
+      tags: [messages]
+      summary: Get a message
+      description: >-
+        Fetches the full message (including body and headers). As a
+        side effect, marks the message as read.
+      operationId: getMessage
+      responses:
+        "200":
+          description: Message found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    $ref: "#/components/schemas/Message"
+                required: [message]
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      tags: [messages]
+      summary: Delete a message
+      operationId: deleteMessage
+      responses:
+        "200":
+          description: Message deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deleted:
+                    type: string
+                    description: The id of the deleted message
+                required: [deleted]
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /api/messages/{id}/read:
+    post:
+      tags: [messages]
+      summary: Mark a message as read
+      operationId: markMessageRead
+      parameters:
+        - $ref: "#/components/parameters/MessageId"
+      responses:
+        "200":
+          $ref: "#/components/responses/MessageUpdated"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /api/messages/{id}/unread:
+    post:
+      tags: [messages]
+      summary: Mark a message as unread
+      operationId: markMessageUnread
+      parameters:
+        - $ref: "#/components/parameters/MessageId"
+      responses:
+        "200":
+          $ref: "#/components/responses/MessageUpdated"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+components:
+  parameters:
+    MessageId:
+      name: id
+      in: path
+      required: true
+      description: Message UUID
+      schema:
+        type: string
+        format: uuid
+
+  responses:
+    BadRequest:
+      description: Malformed id
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    NotFound:
+      description: Message not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    MessageUpdated:
+      description: Updated message
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                $ref: "#/components/schemas/Message"
+            required: [message]
+
+  schemas:
+    MessageSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        from:
+          type: string
+          nullable: true
+        to:
+          type: string
+          nullable: true
+        subject:
+          type: string
+          nullable: true
+        date:
+          type: string
+          nullable: true
+          description: Date header from the original email, as parsed
+        receivedAt:
+          type: string
+          format: date-time
+          description: Server-side timestamp when the message was captured
+        read:
+          type: boolean
+      required: [id, from, to, subject, date, receivedAt, read]
+
+    Message:
+      allOf:
+        - $ref: "#/components/schemas/MessageSummary"
+        - type: object
+          properties:
+            html:
+              type: string
+              nullable: true
+              description: HTML body, if present
+            text:
+              type: string
+              nullable: true
+              description: Plain text body, if present
+            headers:
+              type: object
+              additionalProperties: true
+              description: Parsed email headers
+            raw:
+              type: string
+              description: Raw source of the email
+          required: [html, text, headers, raw]
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+      required: [error]
