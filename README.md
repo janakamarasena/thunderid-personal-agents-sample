@@ -18,6 +18,8 @@ and flows they run on. Thank you!
 > [Let Customers Bring Their Own AI Assistant](https://thunderid.dev/docs/next/use-cases/ai-agents/personal-assistants/overview/):
 > the problem, how it works, and how a delegated token names the user as subject and the agent as actor.
 
+---
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/trust-boundary-dark.svg">
   <img alt="A customer owns their AI agent, outside your service. The agent calls the Sample Bank across the trust boundary." src="docs/images/trust-boundary-light.svg">
