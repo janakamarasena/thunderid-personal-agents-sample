@@ -120,12 +120,19 @@ gives ThunderID an mkcert certificate, runs ThunderID's own setup, and imports t
 ([`thunderid-config/bank-sample.yaml`](thunderid-config/bank-sample.yaml)). `start.sh` starts ThunderID and the
 Sample Bank in the background and prints the URLs. Logs go to `./logs`.
 
+> **Let Claude Code set it up for you.** This repository has a [`CLAUDE.md`](CLAUDE.md) with instructions for
+> Claude Code: checking the prerequisites, getting or building the ThunderID release, setup, starting and
+> stopping, the soft reset between runs and the hard reset, and troubleshooting. Run `claude` in this folder and
+> ask, for example, "set up the demo", "reset the demo" or "do a hard reset". Run the agent itself in a separate
+> session in another folder (see below).
+
 Demo accounts: **john / john** (also carol and bob) for the bank, and **admin** with the `ADMIN_PASSWORD` from
 `.env` (`admin` unless you changed it) for the bank's admin dashboard and ThunderID's Console.
 
 ## The demo, beat by beat
 
-Start the agent in an empty folder, so it starts fresh:
+Start the agent in an empty folder outside this repository, so it starts fresh and doesn't pick up this
+repository's `CLAUDE.md`:
 
 ```bash
 mkdir -p ~/bank-agent && cd ~/bank-agent && claude
@@ -453,6 +460,7 @@ Worth stating precisely, especially to an identity audience:
 │   ├── smtp-server/      Local SMTP server and web inbox
 │   └── start.mjs         Runs the three together
 ├── scripts/              Setup and run scripts, below
+├── CLAUDE.md             Instructions for Claude Code to set up, run and reset the demo
 └── docs/images/          The diagrams in this README
 ```
 
