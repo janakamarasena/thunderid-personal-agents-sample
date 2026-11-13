@@ -14,6 +14,10 @@ credentials**, **delegate** access, and **revoke** that access, using open-sourc
 dashboard, the bank API, the agent's toolkit and skill, the sample email inbox, and the ThunderID configuration
 and flows they run on. Thank you!
 
+> **Official documentation:** ThunderID documents this use case in
+> [Let Customers Bring Their Own AI Assistant](https://thunderid.dev/docs/next/use-cases/ai-agents/personal-assistants/overview/):
+> the problem, how it works, and how a delegated token names the user as subject and the agent as actor.
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/trust-boundary-dark.svg">
   <img alt="A customer owns their AI agent, outside your service. The agent calls the Sample Bank across the trust boundary." src="docs/images/trust-boundary-light.svg">
@@ -502,6 +506,7 @@ of [LF Decentralized Trust](https://www.lfdecentralizedtrust.org). It's lightwei
 (this whole demo is one YAML file), and licensed under Apache 2.0.
 
 - Website and documentation: https://thunderid.dev
+- This use case in the docs: [Let Customers Bring Their Own AI Assistant](https://thunderid.dev/docs/next/use-cases/ai-agents/personal-assistants/overview/)
 - Source: https://github.com/thunder-id/thunderid
 
 ## License
